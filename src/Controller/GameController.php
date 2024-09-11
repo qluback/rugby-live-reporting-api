@@ -2,7 +2,7 @@
 
 namespace App\Controller;
 
-use App\Entity\Team;
+use App\Entity\Game;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -12,7 +12,7 @@ use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 use Symfony\Component\Serializer\Serializer;
 
 #[Route('/api')]
-class TeamController extends AbstractController
+class GameController extends AbstractController
 {
   public function __construct(private EntityManagerInterface $em) {
     $encoders = [new JsonEncoder()];
@@ -20,11 +20,12 @@ class TeamController extends AbstractController
     new Serializer($normalizers, $encoders);
   }
 
-  #[Route('/teams', name: 'app_team')]
+  #[Route('/games', name: 'app_game')]
   public function index(): JsonResponse
   {
-    $teams = $this->em->getRepository(Team::class)->findAll();
+    $games = $this->em->getRepository(Game::class)->findAll();
+    // dd($games);
 
-    return $this->json($teams);
+    return $this->json($games, 200, [], ['groups' => 'getGame']);
   }
 }

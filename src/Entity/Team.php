@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Repository\TeamRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Attribute\Groups;
 
 #[ORM\Entity(repositoryClass: TeamRepository::class)]
 class Team
@@ -11,9 +12,11 @@ class Team
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups(['getGame'])]
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups(['getGame'])]
     private ?string $name = null;
 
     public function getId(): ?int
