@@ -45,8 +45,8 @@ class AppFixtures extends Fixture
         $manager->persist($teamCompeting2);
 
         $newGame = new Game();
-        $newGame->setTeamHome($teamCompeting1);
-        $newGame->setTeamVisitor($teamCompeting2);
+        $newGame->setTeamCompetingHome($teamCompeting1);
+        $newGame->setTeamCompetingVisitor($teamCompeting2);
         $newGame->setScoreHome(0);
         $newGame->setScoreVisitor(0);
         $manager->persist($newGame);

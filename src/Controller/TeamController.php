@@ -20,8 +20,8 @@ class TeamController extends AbstractController
     new Serializer($normalizers, $encoders);
   }
 
-  #[Route('/teams', name: 'app_team')]
-  public function index(): JsonResponse
+  #[Route('/teams', name: 'app_get_teams')]
+  public function getTeams(): JsonResponse
   {
     $teams = $this->em->getRepository(Team::class)->findAll();
 

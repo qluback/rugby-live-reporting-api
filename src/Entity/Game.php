@@ -5,6 +5,7 @@ namespace App\Entity;
 use App\Repository\GameRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Attribute\Groups;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: GameRepository::class)]
 class Game
@@ -18,46 +19,48 @@ class Game
     #[ORM\OneToOne(cascade: ['persist', 'remove'])]
     #[ORM\JoinColumn(nullable: false)]
     #[Groups(['getGame'])]
-    private ?TeamCompeting $teamHome = null;
+    #[Assert\Valid]
+    private ?TeamCompeting $teamCompetingHome = null;
 
     #[ORM\OneToOne(cascade: ['persist', 'remove'])]
     #[ORM\JoinColumn(nullable: false)]
     #[Groups(['getGame'])]
-    private ?TeamCompeting $teamVisitor = null;
+    #[Assert\Valid]
+    private ?TeamCompeting $teamCompetingVisitor = null;
 
     #[ORM\Column]
     #[Groups(['getGame'])]
-    private ?int $scoreHome = null;
+    private ?int $scoreHome = 0;
 
     #[ORM\Column]
     #[Groups(['getGame'])]
-    private ?int $scoreVisitor = null;
+    private ?int $scoreVisitor = 0;
 
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getTeamHome(): ?TeamCompeting
+    public function getTeamCompetingHome(): ?TeamCompeting
     {
-        return $this->teamHome;
+        return $this->teamCompetingHome;
     }
 
-    public function setTeamHome(TeamCompeting $teamHome): static
+    public function setTeamCompetingHome(TeamCompeting $teamCompetingHome): static
     {
-        $this->teamHome = $teamHome;
+        $this->teamCompetingHome = $teamCompetingHome;
 
         return $this;
     }
 
-    public function getTeamVisitor(): ?TeamCompeting
+    public function getTeamCompetingVisitor(): ?TeamCompeting
     {
-        return $this->teamVisitor;
+        return $this->teamCompetingVisitor;
     }
 
-    public function setTeamVisitor(TeamCompeting $teamVisitor): static
+    public function setTeamCompetingVisitor(TeamCompeting $teamCompetingVisitor): static
     {
-        $this->teamVisitor = $teamVisitor;
+        $this->teamCompetingVisitor = $teamCompetingVisitor;
 
         return $this;
     }

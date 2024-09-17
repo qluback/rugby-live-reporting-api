@@ -7,6 +7,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Attribute\Groups;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: TeamCompetingRepository::class)]
 class TeamCompeting
@@ -19,6 +20,7 @@ class TeamCompeting
     #[ORM\ManyToOne(inversedBy: 'teamCompetings')]
     #[ORM\JoinColumn(nullable: false)]
     #[Groups(['getGame'])]
+    #[Assert\NotNull(message: 'Team does not exist')]
     private ?Team $team = null;
 
     /**
