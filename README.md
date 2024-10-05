@@ -8,6 +8,8 @@ Symfony
   - [x] GET all games
   - [x] POST game
   - [ ] PATCH game
+- Team
+  - [ ] GET all teams
 - Highlight
   - [ ] POST Highlight
   - [ ] DELETE Highlight
