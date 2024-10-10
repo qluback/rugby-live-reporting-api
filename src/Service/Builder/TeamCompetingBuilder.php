@@ -9,24 +9,23 @@ use Doctrine\ORM\EntityNotFoundException;
 
 class TeamCompetingBuilder
 {
-  public function __construct(private EntityManagerInterface $em) {}
-
-  public function createTeamCompeting(int $teamId)
-  {
-    $team = $this->em->getRepository(Team::class)->find($teamId);
-
-    if (null === $team) {
-      throw new EntityNotFoundException(
-        sprintf('Team not found with ID %s', $teamId),
-        400
-      );
+    public function __construct(private EntityManagerInterface $em)
+    {
     }
 
-    $teamCompeting = new TeamCompeting();
-    $teamCompeting->setTeam($team);
+    public function createTeamCompeting(int $teamId)
+    {
+        $team = $this->em->getRepository(Team::class)->find($teamId);
 
-    $this->em->persist($teamCompeting);
+        if (null === $team) {
+            throw new EntityNotFoundException(sprintf('Team not found with ID %s', $teamId), 400);
+        }
 
-    return $teamCompeting;
-  }
+        $teamCompeting = new TeamCompeting();
+        $teamCompeting->setTeam($team);
+
+        $this->em->persist($teamCompeting);
+
+        return $teamCompeting;
+    }
 }
