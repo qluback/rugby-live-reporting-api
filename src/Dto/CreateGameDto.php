@@ -13,11 +13,5 @@ class CreateGameDto
     #[Assert\NotBlank]
     #[Assert\Type('int')]
     public readonly int $teamVisitor,
-    #[Assert\NotBlank]
-    #[Assert\Type('int')]
-    public readonly int $scoreHome,
-    #[Assert\NotBlank]
-    #[Assert\Type('int')]
-    public readonly int $scoreVisitor,
   ) {}
 }
