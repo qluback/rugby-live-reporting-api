@@ -21,14 +21,15 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 #[Route('/api')]
 class GameController extends AbstractFOSRestController
 {
-    protected SerializerInterface $serializer;
-
-    public function __construct(private EntityManagerInterface $em, private LoggerInterface $logger)
-    {
+    public function __construct(
+        private EntityManagerInterface $em,
+        private LoggerInterface $logger,
+        private SerializerInterface $serializer
+    ) {
     }
 
     #[Rest\Get('/games', name: 'app_get_games', methods: 'GET')]
-    public function getGames(SerializerInterface $serializer): Response
+    public function getGames(): Response
     {
         $games = $this->em->getRepository(Game::class)->findAll();
 
@@ -37,19 +38,25 @@ class GameController extends AbstractFOSRestController
         // return $this->json($games, 200, [], ['groups' => 'getGame']);
         $view = $this->view([
             'status' => 'success',
-            'message' => 'Game has been successfully created.',
-            'data' => json_decode($serializer->serialize($games, 'json', ['groups' => 'getGames'])),
+            'message' => 'Games have been successfully retrieved.',
+            'data' => json_decode($this->serializer->serialize($games, 'json', ['groups' => 'getGames'])),
         ], Response::HTTP_OK);
 
         return $this->handleView($view);
     }
 
     #[Rest\Get('/games/{id}', name: 'app_get_game_by_id', methods: 'GET')]
-    public function getGameById(int $id): JsonResponse
+    public function getGameById(int $id): Response
     {
-        $games = $this->em->getRepository(Game::class)->find($id);
+        $game = $this->em->getRepository(Game::class)->find($id);
 
-        return $this->json($games, 200, [], ['groups' => 'getGame']);
+        $view = $this->view([
+            'status' => 'success',
+            'message' => 'Game have been successfully retrieved.',
+            'data' => json_decode($this->serializer->serialize($game, 'json', ['groups' => 'getGame'])),
+        ], Response::HTTP_OK);
+
+        return $this->handleView($view);
     }
 
     #[Rest\Post('/games', name: 'app_create_game')]
