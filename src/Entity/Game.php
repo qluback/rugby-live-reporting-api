@@ -13,27 +13,27 @@ class Game
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    #[Groups(['getGame'])]
+    #[Groups(['getGames', 'getGame'])]
     private ?int $id = null;
 
     #[ORM\OneToOne(cascade: ['persist', 'remove'])]
     #[ORM\JoinColumn(nullable: false)]
-    #[Groups(['getGame'])]
+    #[Groups(['getGames', 'getGame'])]
     #[Assert\Valid]
     private ?TeamCompeting $teamCompetingHome = null;
 
     #[ORM\OneToOne(cascade: ['persist', 'remove'])]
     #[ORM\JoinColumn(nullable: false)]
-    #[Groups(['getGame'])]
+    #[Groups(['getGames', 'getGame'])]
     #[Assert\Valid]
     private ?TeamCompeting $teamCompetingVisitor = null;
 
     #[ORM\Column]
-    #[Groups(['getGame'])]
+    #[Groups(['getGames', 'getGame'])]
     private ?int $scoreHome = 0;
 
     #[ORM\Column]
-    #[Groups(['getGame'])]
+    #[Groups(['getGames', 'getGame'])]
     private ?int $scoreVisitor = 0;
 
     public function getId(): ?int

@@ -16,7 +16,7 @@ class Team
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups(['getGame'])]
+    #[Groups(['getGames', 'getGame'])]
     private ?string $name = null;
 
     public function getId(): ?int

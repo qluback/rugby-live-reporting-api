@@ -15,9 +15,6 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Attribute\MapRequestPayload;
 use Symfony\Component\Routing\Attribute\Route;
-use Symfony\Component\Serializer\Encoder\JsonEncoder;
-use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
-use Symfony\Component\Serializer\Serializer;
 use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
@@ -28,15 +25,29 @@ class GameController extends AbstractFOSRestController
 
     public function __construct(private EntityManagerInterface $em, private LoggerInterface $logger)
     {
-        $encoders = [new JsonEncoder()];
-        $normalizers = [new ObjectNormalizer()];
-        $this->serializer = new Serializer($normalizers, $encoders);
     }
 
     #[Rest\Get('/games', name: 'app_get_games', methods: 'GET')]
-    public function getGames(): JsonResponse
+    public function getGames(SerializerInterface $serializer): Response
     {
         $games = $this->em->getRepository(Game::class)->findAll();
+
+        // dd($serializer->serialize($games, 'json', ['groups' => 'getGames']));
+
+        // return $this->json($games, 200, [], ['groups' => 'getGame']);
+        $view = $this->view([
+            'status' => 'success',
+            'message' => 'Game has been successfully created.',
+            'data' => json_decode($serializer->serialize($games, 'json', ['groups' => 'getGames'])),
+        ], Response::HTTP_OK);
+
+        return $this->handleView($view);
+    }
+
+    #[Rest\Get('/games/{id}', name: 'app_get_game_by_id', methods: 'GET')]
+    public function getGameById(int $id): JsonResponse
+    {
+        $games = $this->em->getRepository(Game::class)->find($id);
 
         return $this->json($games, 200, [], ['groups' => 'getGame']);
     }

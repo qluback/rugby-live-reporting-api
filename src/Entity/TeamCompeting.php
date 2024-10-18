@@ -19,7 +19,7 @@ class TeamCompeting
 
     #[ORM\ManyToOne(inversedBy: 'teamCompetings')]
     #[ORM\JoinColumn(nullable: false)]
-    #[Groups(['getGame'])]
+    #[Groups(['getGames', 'getGame'])]
     #[Assert\NotNull(message: 'Team does not exist')]
     private ?Team $team = null;
 
@@ -27,7 +27,6 @@ class TeamCompeting
      * @var Collection<int, Highlight>
      */
     #[ORM\OneToMany(targetEntity: Highlight::class, mappedBy: 'teamCompeting')]
-    #[Groups(['getGame'])]
     private Collection $highlights;
 
     public function __construct()

@@ -15,9 +15,6 @@ use Symfony\Component\Serializer\Serializer;
 class TeamController extends AbstractController
 {
   public function __construct(private EntityManagerInterface $em) {
-    $encoders = [new JsonEncoder()];
-    $normalizers = [new ObjectNormalizer()];
-    new Serializer($normalizers, $encoders);
   }
 
   #[Route('/teams', name: 'app_get_teams')]

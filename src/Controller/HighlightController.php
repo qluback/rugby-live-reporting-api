@@ -24,9 +24,6 @@ class HighlightController extends AbstractFOSRestController
 {
     public function __construct(private EntityManagerInterface $em, private LoggerInterface $logger)
     {
-        $encoders = [new JsonEncoder()];
-        $normalizers = [new ObjectNormalizer()];
-        new Serializer($normalizers, $encoders);
     }
 
     // #[Rest\Get('/games', name: 'app_get_games', methods: 'GET')]
