@@ -30,6 +30,9 @@ class TeamCompeting
     #[Groups(['getGame'])]
     private Collection $highlights;
 
+    #[ORM\Column]
+    private ?int $side = null;
+
     public function __construct()
     {
         $this->highlights = new ArrayCollection();
@@ -78,6 +81,18 @@ class TeamCompeting
                 $highlight->setTeamCompeting(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getSide(): ?int
+    {
+        return $this->side;
+    }
+
+    public function setSide(int $side): static
+    {
+        $this->side = $side;
 
         return $this;
     }

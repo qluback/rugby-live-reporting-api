@@ -4,6 +4,7 @@ namespace App\Service\Builder;
 
 use App\Entity\Team;
 use App\Entity\TeamCompeting;
+use App\Enum\TeamSide;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\EntityNotFoundException;
 
@@ -13,7 +14,7 @@ class TeamCompetingBuilder
     {
     }
 
-    public function createTeamCompeting(int $teamId)
+    public function createTeamCompeting(int $teamId, TeamSide $teamSide)
     {
         $team = $this->em->getRepository(Team::class)->find($teamId);
 
@@ -23,6 +24,7 @@ class TeamCompetingBuilder
 
         $teamCompeting = new TeamCompeting();
         $teamCompeting->setTeam($team);
+        $teamCompeting->setSide($teamSide->value);
 
         $this->em->persist($teamCompeting);
 

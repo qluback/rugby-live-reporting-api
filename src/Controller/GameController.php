@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Dto\CreateGameDto;
 use App\Entity\Game;
+use App\Enum\TeamSide;
 use App\Service\Builder\GameBuilder;
 use App\Service\Builder\TeamCompetingBuilder;
 use Doctrine\ORM\EntityManagerInterface;
@@ -68,10 +69,12 @@ class GameController extends AbstractFOSRestController
     ): Response {
         try {
             $teamCompetingHome = $teamCompetingBuilder->createTeamCompeting(
-                $createGame->teamHome
+                $createGame->teamHome,
+                TeamSide::HOME_ID
             );
             $teamCompetingVisitor = $teamCompetingBuilder->createTeamCompeting(
-                $createGame->teamVisitor
+                $createGame->teamVisitor,
+                TeamSide::VISITOR_ID
             );
             $game = $gameBuilder->createGame($teamCompetingHome, $teamCompetingVisitor);
             $errors = $validator->validate($game);
