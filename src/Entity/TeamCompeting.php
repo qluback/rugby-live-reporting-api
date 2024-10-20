@@ -15,6 +15,7 @@ class TeamCompeting
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups(['getGame'])]
     private ?int $id = null;
 
     #[ORM\ManyToOne(inversedBy: 'teamCompetings')]
