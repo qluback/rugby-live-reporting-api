@@ -44,6 +44,10 @@ class Game
     #[Groups(['getGames', 'getGame'])]
     private ?int $halfTime = 1;
 
+    #[ORM\Column]
+    #[Groups(['getGames', 'getGame'])]
+    private ?int $status = 0;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -117,6 +121,18 @@ class Game
     public function setHalfTime(int $halfTime): static
     {
         $this->halfTime = $halfTime;
+
+        return $this;
+    }
+
+    public function getStatus(): ?int
+    {
+        return $this->status;
+    }
+
+    public function setStatus(int $status): static
+    {
+        $this->status = $status;
 
         return $this;
     }

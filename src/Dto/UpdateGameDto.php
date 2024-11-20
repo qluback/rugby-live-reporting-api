@@ -9,8 +9,9 @@ class UpdateGameDto
     public function __construct(
         // #[Assert\NotBlank]
         // #[Assert\Type('int')]
-        public readonly int $time,
+        public readonly ?int $time,
         public readonly ?int $halfTime,
+        public readonly ?int $status,
     ) {
     }
 }

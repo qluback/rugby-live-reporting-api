@@ -116,6 +116,7 @@ class GameController extends AbstractFOSRestController
         try {
             $game->setTime($gameDto->time ?? $game->getTime());
             $game->setHalfTime($gameDto->halfTime ?? $game->getHalfTime());
+            $game->setStatus($gameDto->status ?? $game->getStatus());
 
             $errors = $validator->validate($game);
 
