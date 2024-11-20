@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Dto\CreateGameDto;
+use App\Dto\UpdateGameDto;
 use App\Entity\Game;
 use App\Enum\TeamSide;
 use App\Service\Builder\GameBuilder;
@@ -62,18 +63,18 @@ class GameController extends AbstractFOSRestController
     #[Rest\Post('/games', name: 'app_create_game')]
     public function createGame(
         Request $request,
-        #[MapRequestPayload] CreateGameDto $createGame,
+        #[MapRequestPayload] CreateGameDto $gameDto,
         TeamCompetingBuilder $teamCompetingBuilder,
         GameBuilder $gameBuilder,
         ValidatorInterface $validator
     ): Response {
         try {
             $teamCompetingHome = $teamCompetingBuilder->createTeamCompeting(
-                $createGame->teamHome,
+                $gameDto->teamHome,
                 TeamSide::HOME_ID
             );
             $teamCompetingVisitor = $teamCompetingBuilder->createTeamCompeting(
-                $createGame->teamVisitor,
+                $gameDto->teamVisitor,
                 TeamSide::VISITOR_ID
             );
             $game = $gameBuilder->createGame($teamCompetingHome, $teamCompetingVisitor);
@@ -105,17 +106,56 @@ class GameController extends AbstractFOSRestController
         return $this->handleView($view);
     }
 
+    #[Rest\Patch('/games/{id}', name: 'app_update_game')]
+    public function updateGame(
+        Request $request,
+        #[MapRequestPayload] UpdateGameDto $gameDto,
+        Game $game,
+        ValidatorInterface $validator
+    ): Response {
+        try {
+            $game->setTime($gameDto->time ?? $game->getTime());
+            $game->setHalfTime($gameDto->halfTime ?? $game->getHalfTime());
+
+            $errors = $validator->validate($game);
+
+            if (count($errors) > 0) {
+                throw new \InvalidArgumentException(sprintf('%s : %s', $errors[0]->getPropertyPath(), $errors[0]->getMessage()), Response::HTTP_BAD_REQUEST);
+            }
+
+            $this->em->flush();
+
+            $view = $this->view([
+                'status' => 'success',
+                'message' => 'Game has been successfully updated.',
+                'data' => json_decode($this->serializer->serialize($game, 'json', ['groups' => 'getGame'])),
+            ], Response::HTTP_CREATED);
+        } catch (\Exception $e) {
+            $view = $this->view([
+                'status' => 'error',
+                'statusCode' => $e->getCode(),
+                'error' => [
+                    'message' => $e->getMessage(),
+                    'path' => $request->getPathInfo(),
+                    'timestamp' => date('Y-m-d\TH:i:s\Z', time()),
+                ],
+            ], $e->getCode());
+        }
+
+        return $this->handleView($view);
+    }
+
     // #[Rest\Put('/games', name: 'app_update_game')]
     // public function updateGame(
-    //   #[MapRequestPayload] CreateGameDto $createGame,
+    //   #[MapRequestPayload] CreateGameDto $gameDto,
     //   TeamCompetingBuilder $teamCompetingBuilder,
     //   GameBuilder $gameBuilder
     // ): JsonResponse {
     //   $teamCompetingHome = $teamCompetingBuilder->createTeamCompeting(
-    //     $createGame->teamHome
+    //     $gameDto->teamHome
     //   );
     //   $teamCompetingVisitor = $teamCompetingBuilder->createTeamCompeting(
-    //     $createGame->teamVisitor
+    //     $gameDto->teamVisitor
     //   );
 
     //   $game = $gameBuilder->createGame($teamCompetingHome, $teamCompetingVisitor);

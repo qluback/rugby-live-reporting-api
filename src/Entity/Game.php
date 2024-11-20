@@ -36,6 +36,14 @@ class Game
     #[Groups(['getGames', 'getGame'])]
     private ?int $scoreVisitor = 0;
 
+    #[ORM\Column]
+    #[Groups(['getGames', 'getGame'])]
+    private ?int $time = 0;
+
+    #[ORM\Column]
+    #[Groups(['getGames', 'getGame'])]
+    private ?int $halfTime = 1;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -85,6 +93,30 @@ class Game
     public function setScoreVisitor(int $scoreVisitor): static
     {
         $this->scoreVisitor = $scoreVisitor;
+
+        return $this;
+    }
+
+    public function getTime(): ?int
+    {
+        return $this->time;
+    }
+
+    public function setTime(int $time): static
+    {
+        $this->time = $time;
+
+        return $this;
+    }
+
+    public function getHalfTime(): ?int
+    {
+        return $this->halfTime;
+    }
+
+    public function setHalfTime(int $halfTime): static
+    {
+        $this->halfTime = $halfTime;
 
         return $this;
     }
