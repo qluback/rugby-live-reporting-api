@@ -26,6 +26,18 @@ class Highlight
     #[ORM\JoinColumn(nullable: false)]
     private ?TeamCompeting $teamCompeting = null;
 
+    #[ORM\Column(nullable: true)]
+    #[Groups(['getGame'])]
+    private ?int $playerSanctioned = null;
+
+    #[ORM\Column(nullable: true)]
+    #[Groups(['getGame'])]
+    private ?int $playerSubstituted = null;
+
+    #[ORM\Column(nullable: true)]
+    #[Groups(['getGame'])]
+    private ?int $playerSubstitute = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -63,6 +75,42 @@ class Highlight
     public function setTeamCompeting(?TeamCompeting $teamCompeting): static
     {
         $this->teamCompeting = $teamCompeting;
+
+        return $this;
+    }
+
+    public function getPlayerSanctioned(): ?int
+    {
+        return $this->playerSanctioned;
+    }
+
+    public function setPlayerSanctioned(?int $playerSanctioned): static
+    {
+        $this->playerSanctioned = $playerSanctioned;
+
+        return $this;
+    }
+
+    public function getPlayerSubstituted(): ?int
+    {
+        return $this->playerSubstituted;
+    }
+
+    public function setPlayerSubstituted(?int $playerSubstituted): static
+    {
+        $this->playerSubstituted = $playerSubstituted;
+
+        return $this;
+    }
+
+    public function getPlayerSubstitute(): ?int
+    {
+        return $this->playerSubstitute;
+    }
+
+    public function setPlayerSubstitute(?int $playerSubstitute): static
+    {
+        $this->playerSubstitute = $playerSubstitute;
 
         return $this;
     }

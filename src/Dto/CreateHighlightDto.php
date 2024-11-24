@@ -17,6 +17,12 @@ class CreateHighlightDto
         #[Assert\NotBlank]
         #[Assert\Type('int')]
         public readonly int $minute,
+        #[Assert\Type('int')]
+        public readonly ?int $playerSanctioned,
+        #[Assert\Type('int')]
+        public readonly ?int $playerSubstituted,
+        #[Assert\Type('int')]
+        public readonly ?int $playerSubstitute,
     ) {
     }
 }

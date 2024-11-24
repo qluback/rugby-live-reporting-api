@@ -19,7 +19,6 @@ class HighlightListener
 
     public function prePersist(Highlight $highlight): void
     {
-        // dd($highlight->getTeamCompeting()->getSide());
         $teamSide = TeamSide::tryFrom($highlight->getTeamCompeting()->getSide());
 
         if (empty($teamSide)) {
@@ -30,8 +29,14 @@ class HighlightListener
 
         $field = $isSideHome ? 'teamCompetingHome' : 'teamCompetingVisitor';
         $game = $this->em->getRepository(Game::class)->findOneBy([$field => $highlight->getTeamCompeting()->getId()]);
-
         $highlightType = HighlightType::from($highlight->getType());
+
+        if ($highlightType->isDisciplinaryHighlight() || $highlightType->isSubstitutionHighlight()) {
+            $this->em->flush();
+
+            return;
+        }
+
         if ($isSideHome) {
             $game->setScoreHome($game->getScoreHome() + $highlightType->getPoints());
         } else {
@@ -39,5 +44,7 @@ class HighlightListener
         }
 
         $this->em->flush();
+
+        return;
     }
 }
